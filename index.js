@@ -66,6 +66,8 @@ export const Config = z.object({
   recallMaxQueries: z.number().default(4),
   recallCorpus: z.string().default('all'),
   recallMinPromptChars: z.number().default(4),
+  /** 召回 query 最多取多少个字符（只取最新一条用户输入）。 */
+  recallMaxPromptChars: z.number().default(2000),
   recallDedupeTtlMs: z.number().default(300000),
   // ── 上报 ────────────────────────────────────────────────────────────────
   captureEnabled: z.boolean().default(true),
@@ -271,11 +273,12 @@ export function apply(ctx, config) {
           try {
             if (!config.recallEnabled || !decision || decision.kind !== 'enter') return decision
             if (step !== 1 || signal?.aborted) return decision
+            // 召回只吃「用户这一轮真正输入的那句话」：不把整段上下文（runtime
+            // context / 附件清单 / 历史多轮）塞进检索，避免 query 稀释成 0 命中。
             const proposed = (messages || []).filter((message) => message?.source?.kind === 'user')
-            const prompt = proposed
-              .map((message) => stripHarnessContext(textOf(message.content)))
-              .filter(Boolean)
-              .join('\n')
+            const latest = proposed[proposed.length - 1]
+            const prompt = stripHarnessContext(textOf(latest?.content))
+              .slice(0, config.recallMaxPromptChars)
               .trim()
             if (prompt.length < config.recallMinPromptChars) return decision
 

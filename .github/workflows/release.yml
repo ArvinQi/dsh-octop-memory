@@ -29,6 +29,10 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
+      - name: Require DSH compatibility declaration
+        run: |
+          node -e "const p=require('./package.json');const v=p.dsh&&p.dsh.engines&&p.dsh.engines.dsh;if(!v){console.error('package.json 必须声明 dsh.engines.dsh（支持的 DSH 版本）');process.exit(1)}console.log('supports DSH',v)"
+
       - name: npm publish
         if: env.NPM_TOKEN != ''
         run: npm publish --access public

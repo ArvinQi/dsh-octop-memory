@@ -1,6 +1,6 @@
 {
   "name": "dsh-octop-memory",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": false,
   "description": "DSH (DeepSeek Harness) plugin for octop-memory: recall shared memory before each turn and report each turn afterwards.",
   "type": "module",
@@ -19,6 +19,9 @@
     "README.md"
   ],
   "dsh": {
+    "engines": {
+      "dsh": ">=0.2.0"
+    },
     "bundle": {
       "patch": "./cordis.patch.yml"
     }
@@ -49,5 +52,8 @@
   },
   "dependencies": {
     "@deepseek-ai/schemastery": "^3.18.5"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh": ">=0.2.0"
   }
 }

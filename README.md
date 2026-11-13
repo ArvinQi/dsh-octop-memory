@@ -42,6 +42,12 @@ DSH（DeepSeek Harness）原生「记忆共享」插件：**每轮开始前自�
 
 主要开关：`recallEnabled` / `captureEnabled` / `recallMaxHits` / `recallMaxChars` / `recallTimeoutMs` / `recallMaxQueries` / `recallCorpus` / `recallDedupeTtlMs` / `captureMaxChars` / `captureTimeoutMs` / `sessionPrefix` / `source`。
 
+## 兼容性
+
+- 插件版本：`0.1.7`
+- 支持的 DSH：`>= 0.2.0`（`dsh.engines.dsh` / `peerDependencies` 已声明，已在 `0.2.2-rc.1` 上验证）
+- Node：`>= 20`
+
 ## 安装
 
 本目录就是插件源码（`src/octop/infra/agents/dsh_native_plugin/`），包名是 `dsh-octop-memory`。
